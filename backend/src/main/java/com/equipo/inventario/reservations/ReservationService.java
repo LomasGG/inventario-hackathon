@@ -186,6 +186,37 @@ public class ReservationService {
         parts.stream().distinct().forEach(suggestions::recalculate);
     }
 
+        /**
+     * Un conteo o ajuste dejó menos existencia que lo reservado (available < 0):
+     * se quitan reservas de la orden más nueva a la más vieja hasta que available vuelva a 0,
+     * y lo quitado pasa a ser faltante (stock.shortage_detected). Lo llama B1 en POST /counts.
+     */
+        public void ajustarReservasASaldo(int partId) {
+            int exceso = -ledger.availableFor(partId);
+            if (exceso <= 0) {
+                return;
+            }
+            List<Line> lines = jdbc.query(SELECT_LINE + """
+                    WHERE ml.part_id = ? AND ml.active AND NOT wo.deleted AND ml.reserved > 0
+                    ORDER BY wo.opened_at DESC NULLS LAST, ml.work_order_id DESC, ml.bom_line_id DESC
+                    """, (rs, i) -> mapLine(rs), partId);
+            for (Line line : lines) {
+                if (exceso <= 0) {
+                    break;
+                }
+                int quitar = Math.min(line.reserved(), exceso);
+                int reserved = line.reserved() - quitar;
+                saveReserved(line, reserved);
+                exceso -= quitar;
+                jdbc.update("UPDATE material_lines SET shortage_opened_at = COALESCE(shortage_opened_at, now()) "
+                        + "WHERE work_order_id = ? AND bom_line_id = ?", line.workOrderId(), line.bomLineId());
+                int missing = line.required() == null ? quitar
+                        : Math.max(0, line.required() - reserved - line.issued());
+                publishShortage(line, missing);
+            }
+            suggestions.recalculate(partId);
+        }
+
     // --- ayudantes ---------------------------------------------------------------------
 
     private Line findActiveLine(int workOrderId, int bomLineId) {

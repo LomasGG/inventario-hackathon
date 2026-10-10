@@ -150,6 +150,8 @@ public class OperationsController {
             ledger.lockPart(line.partId());
             int delta = line.countedQuantity() - ledger.onHandAt(line.partId(), r.locationId());
             if (delta == 0) {
+                // por si el saldo ya estaba por debajo de lo reservado
+                reservations.ajustarReservasASaldo(line.partId());
                 continue;
             }
             ledger.record(line.partId(), r.locationId(), "adjustment", delta, t, r.reason(),
@@ -157,6 +159,11 @@ public class OperationsController {
             publisher.publish("stock.adjusted", "part:" + line.partId(),
                 new StockAdjusted(line.partId(), r.locationId(), delta, r.reason()));
             adjustments.add(new Adjustment(line.partId(), delta));
+            if (delta < 0) {
+                reservations.ajustarReservasASaldo(line.partId()); // no dejar reservado más de lo que hay
+            } else {
+                reservations.allocateIncoming(line.partId(), delta, null); // lo encontrado surte faltantes
+            }
         }
         return Map.of("adjustments", adjustments);
     }
