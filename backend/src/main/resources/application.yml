@@ -22,3 +22,5 @@ spring:
     listener:
       concurrency: 1
       ack-mode: record
+  jackson:
+    property-naming-strategy: SNAKE_CASE
