@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Almacén - Control General</title>
+    <link rel="stylesheet" href="almacen.css" />
+  </head>
+  <body>
+    <header class="encabezado">
+      <div class="marca-redpanda">Redpanda</div>
+      <div class="separador"></div>
+      <div class="submarca">
+        <strong>Almacén inteligente</strong>
+        <small>Panel de Control / Escritorio</small>
+      </div>
+      <nav class="menu-navegacion">
+        <a href="almacen.html" class="activo">Almacén</a>
+        <a href="orden.html">Órdenes</a>
+        <a href="kardex.html">Kardex</a>
+      </nav>
+      <span class="estado">● En línea</span>
+    </header>
+
+    <main class="contenedor-escritorio">
+      <!-- Tarjetas superiores (3 números grandes) -->
+      <section class="tarjetas-resumen">
+        <div class="tarjeta-KPI rojo" onclick="cambiarPestaña('faltantes')">
+          <span class="kpi-titulo">Faltantes abiertos</span>
+          <span class="kpi-valor" id="valFaltantes">--</span>
+          <span class="kpi-sub">Líneas en órdenes pendientes</span>
+        </div>
+        <div class="tarjeta-KPI ambar" onclick="cambiarPestaña('comprar')">
+          <span class="kpi-titulo">Por comprar</span>
+          <span class="kpi-valor" id="valComprar">--</span>
+          <span class="kpi-sub">Piezas con sugerencia</span>
+        </div>
+        <div class="tarjeta-KPI gris" onclick="cambiarPestaña('recepciones')">
+          <span class="kpi-titulo">Recepciones por revisar</span>
+          <span class="kpi-valor" id="valRecepciones">--</span>
+          <span class="kpi-sub">Compras sin identificar</span>
+        </div>
+      </section>
+
+      <!-- Pestañas de navegación interna -->
+      <div class="pestanas">
+        <button class="btn-pestana activa" onclick="cambiarPestaña('existencias')">Existencias</button>
+        <button class="btn-pestana" onclick="cambiarPestaña('faltantes')">Faltantes</button>
+        <button class="btn-pestana" onclick="cambiarPestaña('comprar')">Por comprar</button>
+        <button class="btn-pestana" onclick="cambiarPestaña('recepciones')">Recepciones por revisar</button>
+      </div>
+
+      <!-- Contenido de las Pestañas -->
+      <div class="panel-contenido">
+        
+        <!-- PESTAÑA 1: EXISTENCIAS -->
+        <div id="seccion-existencias" class="seccion-tab">
+          <div class="barra-busqueda">
+            <input type="text" id="buscadorExistencias" placeholder="Buscar por nombre, SKU o número de pieza..." oninput="filtrarExistencias()" />
+          </div>
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Pieza</th>
+                <th>SKU</th>
+                <th class="derecha">En existencia</th>
+                <th class="derecha">Reservado</th>
+                <th class="derecha">Disponible</th>
+              </tr>
+            </thead>
+            <tbody id="tablaExistenciasBody">
+              <!-- Datos de ejemplo / Mock cargados por JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PESTAÑA 2: FALTANTES -->
+        <div id="seccion-faltantes" class="seccion-tab" style="display: none;">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Orden</th>
+                <th>Pieza</th>
+                <th class="derecha">Cantidad que falta</th>
+                <th>Desde cuándo</th>
+              </tr>
+            </thead>
+            <tbody id="tablaFaltantesBody">
+              <!-- Creado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PESTAÑA 3: POR COMPRAR -->
+        <div id="seccion-comprar" class="seccion-tab" style="display: none;">
+          <div class="acciones-panel">
+            <button class="secundario" onclick="copiarListaCompras()">📋 Copiar lista para correo</button>
+          </div>
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Pieza / SKU</th>
+                <th class="derecha">Cantidad sugerida</th>
+                <th>Órdenes que la piden</th>
+              </tr>
+            </thead>
+            <tbody id="tablaComprarBody">
+              <!-- Creado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PESTAÑA 4: RECEPCIONES POR REVISAR -->
+        <div id="seccion-recepciones" class="seccion-tab" style="display: none;">
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Número de parte (Llegada)</th>
+                <th>Descripción</th>
+                <th class="derecha">Cantidad</th>
+                <th>Fecha / Orden</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaRecepcionesBody">
+              <!-- Creado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </main>
+
+    <script src="almacen.js"></script>
+    <script src="almacen.js"></script>
+    <script src="api.js"></script>
+  </body>
+</html>

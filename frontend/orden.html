@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orden de Trabajo - Almacén Inteligente</title>
+    <link rel="stylesheet" href="almacen.css" />
+    <link rel="stylesheet" href="orden.css" />
+  </head>
+  <body>
+    <header class="encabezado">
+      <div class="marca-redpanda">Redpanda</div>
+      <div class="separador"></div>
+      <div class="submarca">
+        <strong>Almacén inteligente</strong>
+        <small>Seguimiento de Órdenes</small>
+      </div>
+      <nav class="menu-navegacion">
+        <a href="almacen.html">Almacén</a>
+        <a href="orden.html" class="activo">Órdenes</a>
+        <a href="kardex.html">Kardex</a>
+      </nav>
+      <span class="estado">● En línea</span>
+    </header>
+
+    <main class="contenedor-escritorio">
+      <!-- Buscador y selector rápido de órdenes -->
+      <section class="barra-superior-orden">
+        <div class="buscador-orden-form">
+          <input type="text" id="inputCodigoOrden" placeholder="Buscar orden (ej. R061026012)..." />
+          <button type="button" class="principal" onclick="buscarOrden()">Consultar</button>
+        </div>
+        <div class="selector-rapido" id="selectorRapidoOrdenes">
+          <!-- Creado por JS con órdenes abiertas -->
+        </div>
+      </section>
+
+      <!-- Panel principal de detalles de la orden -->
+      <section class="panel-contenido" id="panelOrden" style="display: none;">
+        <div class="cabecera-info-orden">
+          <div>
+            <h1 id="tituloCodigoOrden">--</h1>
+            <p id="modeloEquipoOrden" class="subtexto-equipo">Equipo: --</p>
+          </div>
+          <div class="caja-avance">
+            <span id="textoAvance" class="texto-avance">0 de 0 líneas completas</span>
+            <div class="barra-progreso-externa">
+              <div id="barraProgresoInterna" class="barra-progreso-interna" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="tabla-datos">
+          <thead>
+            <tr>
+              <th>Pieza</th>
+              <th class="derecha">Requerido</th>
+              <th class="derecha">Reservado</th>
+              <th class="derecha">Entregado</th>
+              <th class="derecha">Falta</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tablaMaterialesBody">
+            <!-- Filas inyectadas por JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Estado vacío inicial -->
+      <section class="panel-contenido" id="estadoVacioOrden" style="text-align: center; padding: 40px;">
+        <p style="color: #687280; font-size: 15px;">Introduce un código de orden o selecciona una de la lista superior para ver sus materiales.</p>
+      </section>
+    </main>
+
+   <script src="api.js"></script>
+    <script src="orden.js"></script>
+  </body>
+</html>

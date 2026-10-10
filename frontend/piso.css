@@ -1,0 +1,224 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f6fa;
+    color: #222d3d;
+    font-family: Arial, sans-serif;
+}
+
+.encabezado {
+    background: #172131;
+    color: white;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    background: #5267e8;
+    padding: 10px 13px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.encabezado h2,
+.encabezado p {
+    margin: 3px 0;
+}
+
+.encabezado h2 {
+    font-size: 16px;
+}
+
+.encabezado p {
+    color: #b9c4d4;
+    font-size: 11px;
+}
+
+.estado {
+    margin-left: auto;
+    color: #6ee7b7;
+    font-size: 11px;
+}
+
+.contenedor {
+    width: min(100% - 28px, 500px);
+    margin: 25px auto;
+}
+
+.bienvenida h1 {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.bienvenida p {
+    color: #8490a1;
+    font-size: 13px;
+}
+
+.etiqueta {
+    font-size: 10px !important;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.escaner {
+    background: #202c3e;
+    color: white;
+    padding: 18px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.escaner h3 {
+    margin: 0 0 8px;
+}
+
+.escaner p {
+    font-size: 12px;
+    color: #c4cedc;
+}
+
+.escaner button {
+    background: white;
+    color: #202c3e;
+    border: none;
+    border-radius: 7px;
+    padding: 12px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.operaciones {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.operaciones button {
+    background: white;
+    border: 1px solid #e2e7ef;
+    border-radius: 10px;
+    padding: 17px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.operaciones button:hover {
+    border-color: #5267e8;
+}
+
+.operaciones span {
+    display: block;
+    color: #8490a1;
+    font-size: 11px;
+    font-weight: normal;
+    margin-top: 7px;
+}
+
+.formulario {
+    background: white;
+    padding: 20px;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+}
+
+.formulario h2 {
+    margin-top: 0;
+    font-size: 19px;
+}
+
+.campo {
+    margin-bottom: 17px;
+}
+
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #dfe5ed;
+    border-radius: 7px;
+    font-size: 14px;
+    background: white;
+}
+
+.campo input:focus,
+.campo select:focus {
+    outline: 2px solid #cbd3ff;
+    border-color: #5267e8;
+}
+
+.principal {
+    width: 100%;
+    padding: 15px;
+    background: #5267e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.principal:hover {
+    background: #4055d3;
+}
+
+.mensaje {
+    color: #16845c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (min-width: 700px) {
+    .contenedor {
+        margin-top: 35px;
+    }
+}
+
+.marca-redpanda {
+    color: #ef3e36;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.separador {
+    height: 32px;
+    width: 1px;
+    background: #465064;
+}
+
+.submarca {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.submarca strong {
+    font-size: 12px;
+    color: white;
+}
+
+.submarca small {
+    font-size: 10px;
+    color: #aeb9c9;
+}

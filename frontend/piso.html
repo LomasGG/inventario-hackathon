@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Pantalla de piso</title>
+    <link rel="stylesheet" href="piso.css">
+</head>
+<body>
+
+
+<header class="encabezado">
+    <div class="marca-redpanda">Redpanda</div>
+    <div class="separador"></div>
+    <div class="submarca">
+        <strong>Almacén inteligente</strong>
+        <small>Operaciones de piso</small>
+    </div>
+    <span class="estado">● En línea</span>
+</header>
+
+
+<main class="contenedor">
+
+    <section class="bienvenida">
+        <p class="etiqueta">TALLER INDUSTRIAL</p>
+        <h1>¿Qué necesitas hacer?</h1>
+        <p>Selecciona una operación para comenzar.</p>
+    </section>
+
+    <section class="escaner">
+  <h3>▦ Escanear código</h3>
+  <p>Escanea una pieza o ubicación del almacén.</p>
+  <button type="button" onclick="iniciarEscaner()">Abrir cámara</button>
+  
+  <!-- Contenedor donde se renderizará la cámara -->
+  <div id="lector-camara" style="width: 100%; margin-top: 15px; display: none;"></div>
+  <button type="button" id="btnCerrarCamara" onclick="detenerEscaner()" style="display: none; margin-top: 10px; background: #e11d48; color: white;">Cerrar cámara</button>
+</section>
+    <section class="operaciones">
+        <button onclick="cambiarOperacion('retirar')">
+            📦 Retirar pieza
+            <span>Entregar material a una orden</span>
+        </button>
+
+        <button onclick="cambiarOperacion('transferir')">
+            ⇄ Transferir piezas
+            <span>Mover piezas entre ubicaciones</span>
+        </button>
+
+        <button onclick="cambiarOperacion('contar')">
+            ☷ Conteo de inventario
+            <span>Registrar existencias físicas</span>
+        </button>
+    </section>
+
+    <section class="formulario">
+        <h2 id="titulo">Retirar pieza</h2>
+
+        <form id="formOperacion">
+            <div id="campoOrden" class="campo">
+                <label for="orden">Orden de trabajo</label>
+                <input id="orden"
+                       placeholder="Ej. R061026012">
+            </div>
+
+            <div class="campo">
+                <label for="ubicacion">Ubicación</label>
+                <input id="ubicacion"
+                       placeholder="Ej. U-014" required>
+            </div>
+
+            <div id="campoDestino" class="campo" hidden>
+                <label for="destino">Ubicación de destino</label>
+                <input id="destino"
+                       placeholder="Ej. U-021">
+            </div>
+
+            <div id="campoPieza" class="campo">
+                <label for="pieza">Código de pieza</label>
+                <input id="pieza"
+                       placeholder="Ej. BRG-0305" required>
+            </div>
+
+            <div class="campo">
+                <label for="cantidad" id="etiquetaCantidad">
+                    Cantidad a retirar
+                </label>
+                <input id="cantidad" type="number"
+                       min="1" value="1" required>
+            </div>
+
+            <div id="campoMotivo" class="campo" hidden>
+                <label for="motivo">Motivo del ajuste</label>
+                <select id="motivo">
+                    <option value="">Selecciona un motivo</option>
+                    <option>Conteo físico</option>
+                    <option>Material dañado</option>
+                    <option>Error de registro</option>
+                </select>
+            </div>
+
+            <button type="submit" class="principal">
+                Continuar →
+            </button>
+        </form>
+
+        <p id="mensaje" class="mensaje"></p>
+    </section>
+
+</main>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="api.js"></script>
+<script src="piso.js"></script>
+</body>
+</html>
