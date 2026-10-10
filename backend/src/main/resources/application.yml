@@ -1,0 +1,24 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: inventario
+  datasource:
+    url: jdbc:postgresql://localhost:5433/inventario
+    username: inventario
+    password: inventario
+  kafka:
+    bootstrap-servers: localhost:19092
+    consumer:
+      group-id: inventory
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+    listener:
+      concurrency: 1
+      ack-mode: record
