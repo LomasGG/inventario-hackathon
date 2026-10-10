@@ -71,8 +71,8 @@ function iniciarEscaner() {
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 300, height: 120 } },
         (textoLeido) => {
+            manejarCodigoLeido(textoLeido);   // primero: toma el campo que pidió la cámara
             detenerEscaner();
-            manejarCodigoLeido(textoLeido);
         },
         () => { /* fotogramas sin código: se ignoran */ }
     ).catch(err => {
@@ -82,6 +82,8 @@ function iniciarEscaner() {
 }
 
 function detenerEscaner() {
+    // Al cerrar, la siguiente lectura vuelve a ser la general.
+    campoObjetivo = null;
     const ocultar = () => {
         document.getElementById("lector-camara").style.display = "none";
         document.getElementById("btnCerrarCamara").style.display = "none";
@@ -93,9 +95,78 @@ function detenerEscaner() {
     }
 }
 
+// ---------------- Botón de cámara junto a cada campo ----------------
+// Cada campo se puede escribir a mano o llenar con su botón 📷.
+let campoObjetivo = null;   // campo que pidió la cámara (null = cámara general de arriba)
+
+function agregarBotonesCamara() {
+    ["orden", "ubicacion", "destino", "pieza"].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input || input.dataset.conCamara) return;
+        input.dataset.conCamara = "1";
+
+        const fila = document.createElement("div");
+        fila.style.cssText = "display:flex; gap:8px; align-items:center;";
+        input.parentNode.insertBefore(fila, input);
+        fila.appendChild(input);
+        input.style.flex = "1 1 auto";
+        input.style.minWidth = "0";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = "📷";
+        btn.title = "Escanear con la cámara";
+        btn.setAttribute("aria-label", "Escanear con la cámara");
+        btn.style.cssText = "flex:0 0 52px; height:52px; font-size:22px; border:1px solid #d1d5db; " +
+                            "border-radius:10px; background:#fff; cursor:pointer; padding:0;";
+        btn.onclick = () => {
+            campoObjetivo = id;
+            iniciarEscaner();
+            document.getElementById("lector-camara").scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        fila.appendChild(btn);
+    });
+}
+
+/** Llena justo el campo cuyo 📷 se tocó, validando que el código sea del tipo correcto. */
+async function llenarCampo(id, codigo) {
+    const campo = document.getElementById(id);
+    if (id === "orden") {
+        if (!esCodigoOrden(codigo)) {
+            mostrarMensaje(`"${codigo}" no es una orden (R + 9 dígitos).`, "error");
+            return;
+        }
+        campo.value = codigo.toUpperCase();
+        mostrarMensaje(`Orden: ${campo.value}`, "ok");
+        return;
+    }
+    try {
+        const r = await apiGet(`/scan?code=${encodeURIComponent(codigo)}`);
+        if (id === "pieza") {
+            if (r.kind !== "part") throw new Error("no es una pieza");
+            campo.value = codigo;
+            mostrarMensaje(`Pieza: ${r.parts.map(p => p.name).join(" / ")}`, "ok");
+        } else {
+            if (r.kind !== "location") throw new Error("no es una ubicación");
+            campo.value = r.location.code;
+            mostrarMensaje(`${id === "destino" ? "Destino" : "Ubicación"}: ${r.location.code} · ${r.location.name}`, "ok");
+        }
+    } catch (e) {
+        mostrarMensaje(`No se pudo usar "${codigo}": ${e.message}`, "error");
+    }
+}
+
+agregarBotonesCamara();
+
 /** Decide en qué campo va lo escaneado preguntándole a la API qué es. */
 async function manejarCodigoLeido(codigo) {
     codigo = codigo.trim();   // los SKU traen espacios y diagonales: no se alteran
+    if (campoObjetivo) {
+        const id = campoObjetivo;
+        campoObjetivo = null;
+        await llenarCampo(id, codigo);
+        return;
+    }
     if (esCodigoOrden(codigo)) {
         document.getElementById("orden").value = codigo.toUpperCase();
         mostrarMensaje(`Orden: ${codigo}`, "ok");
