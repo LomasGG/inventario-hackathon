@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kardex de Pieza - Almacén Inteligente</title>
+    <link rel="stylesheet" href="almacen.css" />
+    <link rel="stylesheet" href="kardex.css" />
+  </head>
+  <body>
+    <header class="encabezado">
+      <div class="marca-redpanda">Redpanda</div>
+      <div class="separador"></div>
+      <div class="submarca">
+        <strong>Almacén inteligente</strong>
+        <small>Historial y Auditoría (Kardex)</small>
+      </div>
+      <nav class="menu-navegacion">
+        <a href="almacen.html">Almacén</a>
+        <a href="orden.html">Órdenes</a>
+        <a href="kardex.html" class="activo">Kardex</a>
+      </nav>
+      <span class="estado">● En línea</span>
+    </header>
+
+    <main class="contenedor-escritorio">
+      <!-- Buscador superior de pieza -->
+      <section class="barra-superior-kardex">
+        <div class="buscador-kardex-form">
+          <input type="text" id="inputBusquedaPieza" placeholder="Buscar por ID, SKU o nombre (ej. 196)..." />
+          <button type="button" class="principal" onclick="buscarPiezaKardex()">Buscar pieza</button>
+        </div>
+      </section>
+
+      <!-- Panel con la tarjeta de la pieza e historial -->
+      <section id="panelKardex" class="panel-contenido" style="display: none;">
+        <div class="tarjeta-pieza-kardex">
+          <div>
+            <h1 id="nombrePiezaKardex">--</h1>
+            <p><span class="sku-mono" id="skuPiezaKardex">SKU: --</span></p>
+          </div>
+          <div class="kpi-grupo-mini">
+            <div class="kpi-mini">
+              <span class="kpi-mini-titulo">En existencia</span>
+              <span class="kpi-mini-valor" id="valExistencia">0</span>
+            </div>
+            <div class="kpi-mini">
+              <span class="kpi-mini-titulo">Reservado</span>
+              <span class="kpi-mini-valor" id="valReservado">0</span>
+            </div>
+            <div class="kpi-mini">
+              <span class="kpi-mini-titulo">Disponible</span>
+              <span class="kpi-mini-valor texto-verde" id="valDisponible">0</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 24px; margin-bottom: 12px;">Historial de Movimientos</h3>
+        <table class="tabla-datos">
+          <thead>
+            <tr>
+              <th>Fecha y Hora</th>
+              <th>Tipo</th>
+              <th>Ubicación</th>
+              <th class="derecha">Cantidad</th>
+              <th>Referencia</th>
+              <th class="derecha">Saldo posterior</th>
+            </tr>
+          </thead>
+          <tbody id="tablaMovimientosBody">
+            <!-- Movimientos inyectados dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Estado vacío inicial -->
+      <section class="panel-contenido" id="estadoVacioKardex" style="text-align: center; padding: 40px;">
+        <p style="color: #687280; font-size: 15px;">Introduce un ID o SKU de pieza (prueba buscando <strong>"196"</strong>) para consultar su historial de movimientos[cite: 10].</p>
+      </section>
+    </main>
+
+    <script src="kardex.js"></script>
+  </body>
+</html>

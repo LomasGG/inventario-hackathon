@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú Principal - Almacén Inteligente</title>
+    <link rel="stylesheet" href="almacen.css" />
+  </head>
+  <body style="background: #f6f7f9; display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
+    <header class="encabezado">
+      <div class="marca-redpanda">Redpanda</div>
+      <div class="separador"></div>
+      <div class="submarca">
+        <strong>Almacén inteligente</strong>
+        <small>Menú Principal del Sistema</small>
+      </div>
+      <span class="estado">● En línea</span>
+    </header>
+
+    <main class="contenedor-escritorio" style="max-width: 800px; margin-top: 50px;">
+      <div class="panel-contenido" style="padding: 30px;">
+        <h1 style="margin-top: 0; font-size: 22px; color: #1b1f24;">Selecciona una pantalla para comenzar</h1>
+        <p style="color: #687280; font-size: 14px; margin-bottom: 30px;">
+          Herramienta de control de almacén y taller industrial. Elige el módulo que deseas abrir:
+        </p>
+
+        <div style="display: grid; gap: 15px;">
+          <!-- 1. Pantalla de Piso (Celular) -->
+          <a href="piso.html" style="display: block; background: #ffffff; border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s;">
+            <strong style="font-size: 16px; color: #2563eb; display: block; margin-bottom: 4px;">📱 Pantalla de Piso (Celular)</strong>
+            <span style="font-size: 13px; color: #687280;">Operaciones móviles de retiro, transferencia y conteo para técnicos de taller[cite: 3, 4, 5].</span>
+          </a>
+
+          <!-- 2. Almacén (Escritorio) -->
+          <a href="almacen.html" style="display: block; background: #ffffff; border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s;">
+            <strong style="font-size: 16px; color: #2563eb; display: block; margin-bottom: 4px;">📦 Almacén (Escritorio)</strong>
+            <span style="font-size: 13px; color: #687280;">Saldos, faltantes abiertos, sugerencias de compra y recepciones por revisar[cite: 7, 8].</span>
+          </a>
+
+          <!-- 3. Orden de Trabajo -->
+          <a href="orden.html" style="display: block; background: #ffffff; border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s;">
+            <strong style="font-size: 16px; color: #2563eb; display: block; margin-bottom: 4px;">📋 Orden de Trabajo</strong>
+            <span style="font-size: 13px; color: #687280;">Seguimiento central de materiales, requerimientos y estados por línea de orden[cite: 9].</span>
+          </a>
+
+          <!-- 4. Kardex de Pieza -->
+          <a href="kardex.html" style="display: block; background: #ffffff; border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s;">
+            <strong style="font-size: 16px; color: #2563eb; display: block; margin-bottom: 4px;">📊 Kardex de Pieza</strong>
+            <span style="font-size: 13px; color: #687280;">Historial completo de movimientos, auditoría y saldos detallados por pieza[cite: 10].</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

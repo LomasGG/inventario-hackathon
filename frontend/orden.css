@@ -1,0 +1,121 @@
+.barra-superior-orden {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.buscador-orden-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.buscador-orden-form input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.buscador-orden-form button {
+    padding: 10px 18px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.selector-rapido {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chip-selector-orden {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #374151;
+}
+
+.chip-selector-orden:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.cabecera-info-orden {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 16px;
+}
+
+.cabecera-info-orden h1 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.subtexto-equipo {
+    margin: 0;
+    color: #687280;
+    font-size: 14px;
+}
+
+.caja-avance {
+    text-align: right;
+    min-width: 200px;
+}
+
+.texto-avance {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.barra-progreso-externa {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.barra-progreso-interna {
+    background: #15803d;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Pastillas de estado personalizadas */
+.pastilla {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.pastilla.entregado { background: #dcfce7; color: #15803d; }
+.pastilla.listo { background: #dbeafe; color: #1d4ed8; }
+.pastilla.parcial { background: #fef3c7; color: #b45309; }
+.pastilla.faltante { background: #fee2e2; color: #b91c1c; }
+.pastilla.sin-identificar { background: #f3f4f6; color: #4b5563; }

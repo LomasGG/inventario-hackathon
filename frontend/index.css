@@ -1,0 +1,103 @@
+/* Variables de color oficiales del proyecto */
+:root {
+    --fondo: #F6F7F9;
+    --texto-principal: #1B1F24;
+    --acento: #2563EB;
+    --acento-hover: #1d4ed8;
+    --ok: #15803D;
+    --reservado: #B45309;
+    --error: #B91C1C;
+    --neutro: #687280;
+    --borde: #E5E7EB;
+    --blanco: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--fondo);
+    color: var(--texto-principal);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+}
+
+/* Códigos en letra monoespaciada (SKU, ubicaciones, etc.) */
+.sku, code, .sku-mono {
+    font-family: monospace, monospace;
+    font-size: 14px;
+}
+
+/* Botones principales y secundarios */
+button, .btn-principal {
+    background-color: var(--acento);
+    color: var(--blanco);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover, .btn-principal:hover {
+    background-color: var(--acento-hover);
+}
+
+button.secundario, .btn-secundario {
+    background-color: var(--blanco);
+    color: var(--texto-principal);
+    border: 1px solid var(--borde);
+}
+
+button.secundario:hover, .btn-secundario:hover {
+    background-color: var(--fondo);
+}
+
+/* Tarjetas base */
+.tarjeta {
+    background-color: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Tablas compartidas */
+table.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background-color: var(--blanco);
+}
+
+table.tabla-datos th, 
+table.tabla-datos td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--borde);
+}
+
+table.tabla-datos th {
+    font-weight: 600;
+    color: var(--texto-principal);
+    background-color: #FAFAFB;
+}
+
+table.tabla-datos td.derecha, 
+table.tabla-datos th.derecha {
+    text-align: right;
+}
+
+/* Pastillas de estado compartidas */
+.pastilla {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+.pastilla.disponible { background: #dcfce7; color: var(--ok); }
+.pastilla.reservado { background: #fef3c7; color: var(--reservado); }
+.pastilla.faltante { background: #fee2e2; color: var(--error); }
