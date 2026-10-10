@@ -21,3 +21,26 @@ POST http://localhost:8000/counts
 Content-Type: application/json
 
 {"location_id": 100, "reason": "", "lines": [{"part_id": 196, "counted_quantity": 0}]}
+### Ubicaciones
+GET http://localhost:8000/locations
+
+### Buscar piezas
+GET http://localhost:8000/parts?q=rodamiento
+
+### Escanear una ubicacion
+GET http://localhost:8000/scan?code=U-101
+
+### Escanear un SKU con espacios y diagonal
+GET http://localhost:8000/scan?code=7014%20CTA%2FP4
+
+### Escanear una pieza sin SKU
+GET http://localhost:8000/scan?code=P-24
+
+### Existencias
+GET http://localhost:8000/stock?q=rodamiento
+
+### Ordenes abiertas
+GET http://localhost:8000/work-orders?open=true
+
+### Quien tiene reservada la pieza 196
+GET http://localhost:8000/parts/196/reservations
