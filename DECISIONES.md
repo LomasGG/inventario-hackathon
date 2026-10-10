@@ -15,6 +15,7 @@
 - **Decisión:** la necesidad vive por (orden, `bom_line_id`) en `material_lines`. Una aprobación posterior **reemplaza** `required` sin tocar `reserved` ni `issued`, y `reconcile` reserva o libera solo la diferencia. Un solo hilo consume, y un candado por pieza (`SELECT ... FOR UPDATE`) protege contra la API.
 - **Por qué:** es lo que pide el contrato y evita que la inspección completa duplique la rápida. `available` nunca baja de cero.
 - **Fuera:** reserva por ubicación (reservamos por pieza: el técnico la toma de cualquier estante).
+- **Conteo con merma.** Si un conteo deja menos existencia que lo reservado, se liberan reservas de la orden más nueva a la más vieja y lo liberado pasa a faltante (`stock.shortage_detected`). Si el conteo encuentra piezas de más, surten faltantes igual que una compra. Así `available = on_hand - reserved` nunca es negativo.
 
 ## 4. ¿Cómo garantizan la idempotencia?
 - **Decisión:** el `event_id` se guarda en `processed_events` dentro de la misma transacción que los efectos; si llega repetido, no hace nada. Los eventos de salida se publican después del commit. Al arrancar se lee primero el catálogo, y con la base vacía se releen los tópicos desde el inicio.
