@@ -24,3 +24,6 @@ spring:
       ack-mode: record
   jackson:
     property-naming-strategy: SNAKE_CASE
+  web:
+       resources:
+         static-locations: classpath:/static/,file:../frontend/,file:/frontend/

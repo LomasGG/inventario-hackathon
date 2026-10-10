@@ -19,6 +19,8 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
+    volumes:
+         - ./frontend:/frontend:ro
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventario
       SPRING_KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
