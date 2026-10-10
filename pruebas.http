@@ -21,3 +21,27 @@ POST http://localhost:8000/counts
 Content-Type: application/json
 
 {"location_id": 100, "reason": "", "lines": [{"part_id": 196, "counted_quantity": 0}]}
+
+### P5-1 Transferir a ubicación que no existe (debe dar 404)
+POST http://localhost:8000/transfers
+Content-Type: application/json
+
+{"part_id": 196, "from_location_id": 100, "to_location_id": 999, "quantity": 2}
+
+### P5-2 Transferir a la misma ubicación (debe dar 422)
+POST http://localhost:8000/transfers
+Content-Type: application/json
+
+{"part_id": 196, "from_location_id": 100, "to_location_id": 100, "quantity": 2}
+
+### P5-3 Conteo: en U-100 hay 5 de la pieza 196 (debe dar 201, delta -1)
+POST http://localhost:8000/counts
+Content-Type: application/json
+
+{"location_id": 100, "reason": "Conteo físico", "lines": [{"part_id": 196, "counted_quantity": 5}]}
+
+### P5-4 Sacar más de lo que hay (debe dar 409)
+POST http://localhost:8000/issues
+Content-Type: application/json
+
+{"work_order_code": "R060826000", "part_id": 196, "location_id": 100, "quantity": 50, "issued_by": "pedro"}
