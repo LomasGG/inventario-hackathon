@@ -1,7 +1,8 @@
 # Decisiones de diseño
 
-## 1. ¿Cómo relacionan las compras con el catálogo? *(B1 completa)*
-- **Decisión:** `upper(trim(part_number))` contra `sku_norm`. Si no queda exactamente 1 pieza, segundo intento sin espacios ni guiones. Con 0 o varias coincidencias va a revisión manual (`stock.unmatched_receipt` y `POST /unmatched-receipts/{id}/resolve`).
+## 1. ¿Cómo relacionan las compras con el catálogo?
+- **Decisión:** se compara el `part_number` contra el SKU con trim y mayúsculas. Si no hay coincidencia exacta, se intenta sin espacios ni guiones, pero solo se acepta si queda exactamente una pieza.
+- **Revisión manual:** con 0 o más de 1 coincidencia, la compra va a `/unmatched-receipts`; al resolverla se da la entrada en `U-100`.
 - **Por qué:** nunca adivinamos entre dos piezas; un error de inventario cuesta más que una revisión de 10 segundos.
 - **Fuera:** coincidencias aproximadas y tablas de números de proveedor.
 
@@ -21,6 +22,8 @@
 - **Fuera:** tabla *outbox* (si el servicio cae justo después del commit, un evento de salida podría perderse).
 
 ## Otras decisiones
+- **Catálogo al día antes de cada compra:** antes de procesar una compra se lee `shop.catalog` hasta el final, para que la compra vea todas las piezas publicadas antes que ella (entre tópicos no hay orden).
+- **Código de ubicación no único:** la identidad de una ubicación es su `location_id`; las pruebas repiten códigos (como `U-013`) con otro id.
 - **Orden por orden:** si un evento de una orden está pendiente, los siguientes de esa misma orden esperan detrás. Así una anulación nunca se aplica antes que su aprobación.
 - **Pendientes y errores:** un evento que menciona una pieza o línea aún desconocida espera en `pending_events` y se reintenta al llegar catálogo u órdenes. Lo que falla tras 2 reintentos va a `inventory.dlq` sin detener el consumo.
 - **Liberar no reasigna:** al anular o borrar una orden, lo liberado queda disponible y se reparte con la siguiente compra.
