@@ -34,19 +34,24 @@ public class ShopListener implements ConsumerSeekAware {
 
     private final EventDispatcher dispatcher;
     private final StartupState startup;
+    private final CatalogCatchUp catalogCatchUp;
     /** Propio (Jackson 2): Spring Boot 4 solo registra el de Jackson 3. */
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public ShopListener(EventDispatcher dispatcher, StartupState startup) {
+    public ShopListener(EventDispatcher dispatcher, StartupState startup, CatalogCatchUp catalogCatchUp) {
         this.dispatcher = dispatcher;
         this.startup = startup;
+        this.catalogCatchUp = catalogCatchUp;
     }
 
     @KafkaListener(id = LISTENER_ID, groupId = "inventory", autoStartup = "false",
             topics = {CATALOG, WORK_ORDERS, INSPECTIONS, PURCHASING},
             properties = {"auto.offset.reset=earliest"})
-    public void onMessage(ConsumerRecord<String, String> record) throws Exception {
+        public void onMessage(ConsumerRecord<String, String> record) throws Exception {
         JsonNode event = mapper.readTree(record.value()); // si el JSON viene roto, truena y va a la DLQ
+        if (PURCHASING.equals(record.topic())) {
+            catalogCatchUp.run(); // regla: que la compra vea todas las piezas publicadas antes que ella
+        }
         dispatcher.process(record.topic(), event);
     }
 

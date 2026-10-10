@@ -1,0 +1,77 @@
+### 1. Compra con el SKU en minúsculas y con espacios -> entran 5 a U-100
+POST http://localhost:8000/dev/events
+Content-Type: application/json
+
+{"event_id": "00000000-0000-0000-0000-000000000001", "event_type": "purchase.item_received", "event_version": 1, "occurred_at": "2026-10-09T12:00:00Z", "source": "shop-floor", "key": "PR-1", "data": {"purchase_request_id": 900001, "request_number": "900001", "line_id": 900001, "part_number": "  prueba 9001/x ", "description": "Rodamiento", "quantity": 5, "unit_price": "1850.00", "currency": "MXN", "purpose": "restock", "received_at": "2026-10-09T12:00:00Z", "work_order_code": null}}
+
+### 2. Compra con SKU repetido en 2 piezas -> a revisión manual
+POST http://localhost:8000/dev/events
+Content-Type: application/json
+
+{"event_id": "00000000-0000-0000-0000-000000000002", "event_type": "purchase.item_received", "event_version": 1, "occurred_at": "2026-10-09T12:01:00Z", "source": "shop-floor", "key": "PR-2", "data": {"purchase_request_id": 900002, "request_number": "900002", "line_id": 900002, "part_number": "DUP-1", "description": "Gemela", "quantity": 1, "unit_price": "10.00", "currency": "MXN", "purpose": "restock", "received_at": "2026-10-09T12:01:00Z", "work_order_code": null}}
+
+### 3. Compra para cliente -> no hace nada
+POST http://localhost:8000/dev/events
+Content-Type: application/json
+
+{"event_id": "00000000-0000-0000-0000-000000000003", "event_type": "purchase.item_received", "event_version": 1, "occurred_at": "2026-10-09T12:02:00Z", "source": "shop-floor", "key": "PR-3", "data": {"purchase_request_id": 900003, "request_number": "900003", "line_id": 900003, "part_number": "PRUEBA 9001/X", "description": "Para cliente", "quantity": 9, "unit_price": "10.00", "currency": "MXN", "purpose": "customer_order", "received_at": "2026-10-09T12:02:00Z", "work_order_code": null}}
+
+### 4. Saldo -> on_hand 5, todo en U-100
+GET http://localhost:8000/parts/9001/availability
+
+### 5. Recepciones por revisar -> busca la de DUP-1 (purchase_line_id 900002) y anota su "id"
+GET http://localhost:8000/unmatched-receipts
+
+### 6. Transferir 9 -> 409
+POST http://localhost:8000/transfers
+Content-Type: application/json
+
+{"part_id": 9001, "from_location_id": 100, "to_location_id": 101, "quantity": 9}
+
+### 7. Transferir 3 -> 201 (U-100 = 2, U-101 = 3)
+POST http://localhost:8000/transfers
+Content-Type: application/json
+
+{"part_id": 9001, "from_location_id": 100, "to_location_id": 101, "quantity": 3}
+
+### 8. Conteo sin motivo -> 422
+POST http://localhost:8000/counts
+Content-Type: application/json
+
+{"location_id": 101, "reason": "", "lines": [{"part_id": 9001, "counted_quantity": 2}]}
+
+### 9. Conteo con motivo -> 201, adjustments [{part_id 9001, delta -1}]
+POST http://localhost:8000/counts
+Content-Type: application/json
+
+{"location_id": 101, "reason": "conteo cíclico", "lines": [{"part_id": 9001, "counted_quantity": 2}]}
+
+### 10. Salida de 5 en U-100 (solo hay 2) -> 409
+POST http://localhost:8000/issues
+Content-Type: application/json
+
+{"work_order_code": "R000000001", "part_id": 9001, "location_id": 100, "quantity": 5, "issued_by": "tecnico-1"}
+
+### 11. Salida de 1 -> 201
+POST http://localhost:8000/issues
+Content-Type: application/json
+
+{"work_order_code": "R000000001", "part_id": 9001, "location_id": 100, "quantity": 1, "issued_by": "tecnico-1"}
+
+### 12. Kardex -> 5 movimientos, el más reciente con saldo 3
+GET http://localhost:8000/parts/9001/ledger
+
+### 13. Resolver a mano la recepción del DUP-1 (CAMBIA EL 1 de la URL por el id de la prueba 5)
+POST http://localhost:8000/unmatched-receipts/210/resolve
+Content-Type: application/json
+
+{"part_id": 9002}
+
+### 14. Resolverla otra vez (mismo id) -> 409
+POST http://localhost:8000/unmatched-receipts/210/resolve
+Content-Type: application/json
+
+{"part_id": 9002}
+
+### 15. Comprobar que la gemela A recibió la pieza -> on_hand 1
+GET http://localhost:8000/parts/9002/availability
