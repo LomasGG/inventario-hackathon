@@ -1,0 +1,23 @@
+### Saldo de una pieza
+GET http://localhost:8000/parts/196/availability
+
+### Kardex de una pieza
+GET http://localhost:8000/parts/196/ledger
+
+### Materiales de una orden
+GET http://localhost:8000/work-orders/R060826000/materials
+
+### Faltantes abiertos
+GET http://localhost:8000/shortages
+
+### Retirar una pieza
+POST http://localhost:8000/issues
+Content-Type: application/json
+
+{"work_order_code": "R060826000", "part_id": 196, "location_id": 100, "quantity": 1, "issued_by": "prueba"}
+
+### Conteo sin motivo (debe dar 422)
+POST http://localhost:8000/counts
+Content-Type: application/json
+
+{"location_id": 100, "reason": "", "lines": [{"part_id": 196, "counted_quantity": 0}]}
