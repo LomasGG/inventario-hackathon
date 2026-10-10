@@ -9,7 +9,30 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inventario"]
+      interval: 3s
+      retries: 20
+
+  inventario:
+    profiles: ["app"]
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventario
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - default
+      - kit
 
 volumes:
   pgdata:
-  
+
+networks:
+  kit:
+    external: true
+    name: ${KIT_NETWORK:-kit_default}
